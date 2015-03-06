@@ -106,22 +106,22 @@ brew install caskroom/cask/brew-cask
 
 # Brew cask software install
 brew cask install google-chrome
-brew cask install vlc
 brew cask install iterm2
+brew cask install java
 brew cask install virtualbox
+brew cask install nvalt
+brew cask install pandoc
+brew cask install spark
+brew cask install spectacle
+brew cask install vlc
 brew cask install audiobook-builder
 brew cask install wacom-tablet
 brew cask install calibre
 brew cask install handbrake
 brew cask install krita
 brew cask install nethackcocoa
-brew cask install nvalt
-brew cask install pandoc
-brew cask install spark
-brew cask install spectacle
 brew cask install steam
 brew cask install 1password
-
 
 # Remove outdated versions from the cellar.
 brew cleanup
