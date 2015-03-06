@@ -103,3 +103,5 @@ brew install iojs
 
 # Remove outdated versions from the cellar.
 brew cleanup
+
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
