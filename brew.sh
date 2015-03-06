@@ -101,6 +101,7 @@ brew install node
 # Install io.js
 brew install iojs
 
+brew install mobile-shell
 # Brew cask installations
 brew install caskroom/cask/brew-cask
 
