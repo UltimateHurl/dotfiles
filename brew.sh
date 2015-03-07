@@ -120,7 +120,6 @@ brew cask install audiobook-builder
 brew cask install wacom-tablet
 brew cask install calibre
 brew cask install handbrake
-brew cask install krita
 brew cask install nethackcocoa
 brew cask install steam
 brew cask install 1password
