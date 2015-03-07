@@ -74,7 +74,7 @@ brew install tcpflow
 brew install tcpreplay
 brew install tcptrace
 brew install ucspi-tcp # `tcpserver` etc.
-brew install xpdf
+brew install hombrew/x11/xpdf
 brew install xz
 
 # Install other useful binaries.
