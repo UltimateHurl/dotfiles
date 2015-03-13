@@ -95,6 +95,7 @@ Plugin 'vim-scripts/paredit.vim'
 Plugin 'ntpeters/vim-better-whitespace'
 " Align CSV files at commas, align Markdown tables, and more
 Plugin 'godlygeek/tabular'
+Plugin 'Shougo/vimproc.vim'
 
 call vundle#end() " required
 
@@ -216,9 +217,16 @@ set nofoldenable                               " Don't fold by default
 " Unite options
 """"""""""""""""""""
 let g:unite_source_history_yank_enable = 1
+let g:unite_split_rule = "botright"
+let g:unite_winheight = 10
+
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
 nnoremap <leader>y :Unite history/yank<cr>
-nnoremap <C-p> :Unite file_rec/async<cr>
-nnoremap <space>s :Unite -quick-match buffer<cr>
+nnoremap <C-p> :Unite file_rec<cr>
+nnoremap <space> :Unite -quick-match buffer<cr>
+nnoremap <leader>/ :Unite grep:.<cr>
+
 
 " CTRL+P options
 """"""""""""""""""""
