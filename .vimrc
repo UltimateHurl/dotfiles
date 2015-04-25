@@ -304,3 +304,8 @@ let g:airline_symbols.linenr    = ':'
 let g:airline_symbols.space     = ' '
 let g:airline_symbols.paste     = 'PASTE'
 
+
+" vimtex
+""""""""""""""""""""
+let g:tex_flavor='xelatex'
+let g:Tex_CompileRule_pdf='xelatex --interaction=nonstopmode $*'
