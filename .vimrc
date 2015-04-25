@@ -46,10 +46,14 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-fugitive'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'elzr/vim-json'
+" Unite 
+Plugin 'Shougo/unite.vim'
+"Buffer Explorer
+"Plugin 'jlanzarotta/bufexplorer'
 " ctrlp is file fuzzy search
-Plugin 'kien/ctrlp.vim'
+"Plugin 'kien/ctrlp.vim'
 " Ack.vim uses ack to search within files
-Plugin 'mileszs/ack.vim'
+"Plugin 'mileszs/ack.vim'
 "Airline provides a stylish appearance for the styleline
 Plugin 'bling/vim-airline'
 " Syntastic provides syntax info
@@ -82,14 +86,19 @@ Plugin 'tpope/vim-speeddating'
 Plugin 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
-"Buffer Explorer
-Plugin 'jlanzarotta/bufexplorer'
+" Autocomplete
+Plugin 'Valloric/YouCompleteMe'
+" Multiple cursors
+Plugin 'terryma/vim-multiple-cursors'
 "Paredit
 Plugin 'vim-scripts/paredit.vim'
 Plugin 'ntpeters/vim-better-whitespace'
 " Align CSV files at commas, align Markdown tables, and more
 Plugin 'godlygeek/tabular'
-
+Plugin 'Shougo/vimproc.vim'
+Plugin 'rizzatti/dash.vim'
+Plugin 'ervandew/supertab'
+Plugin 'lervag/vimtex'
 call vundle#end() " required
 
 filetype plugin indent on
@@ -136,7 +145,7 @@ set autochdir
 nnoremap ; :
 let mapleader=","                              " change the mapleader from \ to ,
 
-nmap <silent> <leader>ev :e $MYVIMRC<CR>       " Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>" Quickly edit/reload the vimrc file
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 
@@ -188,7 +197,7 @@ set nowritebackup
 " ===============
 " Keep undo history across sessions, by storing in file
 " Only works in MacVim (gui) mode
-if has('gui_running')
+if exists("&undodir")
   if has('win32')
     set undodir=H:/vimfiles/backups
   else
@@ -207,16 +216,30 @@ set nofoldenable                               " Don't fold by default
 " Plugin Options
 " ==============
 
+" Unite options
+""""""""""""""""""""
+let g:unite_source_history_yank_enable = 1
+let g:unite_split_rule = "botright"
+let g:unite_winheight = 10
+
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+nnoremap <leader>y :Unite history/yank<cr>
+nnoremap <C-p> :Unite file_rec<cr>
+nnoremap <space> :Unite -quick-match buffer<cr>
+nnoremap <leader>/ :Unite grep:.<cr>
+
+
 " CTRL+P options
 """"""""""""""""""""
-let g:ctrlp_custom_ignore = {
-    \ 'file': '\.swp$|\.tmp$|\.pdf$|\.zip$|\.exe$|\.pyc$',
-    \ 'dir': '\.DS_Store$\|\.git$'
-    \ }
+" let g:ctrlp_custom_ignore = {
+    " \ 'file': '\.swp$|\.tmp$|\.pdf$|\.zip$|\.exe$|\.pyc$',
+    " \ 'dir': '\.DS_Store$\|\.git$'
+    " \ }
 
 " BufExplorer options
 """"""""""""""""""""
-nnoremap <space> :BufExplorerHorizontalSplit<CR>
+" nnoremap <space> :BufExplorerHorizontalSplit<CR>
 
 "Markdown options
 """"""""""""""""""""
@@ -230,9 +253,9 @@ let g:org_todo_keywords = [
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 """"""""""""""""""""
-let g:UltiSnipsExpandTrigger="<c-tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " fugitive git bindings
 """"""""""""""""""""
@@ -252,7 +275,7 @@ nnoremap <leader>go :Git checkout<Space>
 nnoremap <leader>gps :Dispatch! git push<CR>
 nnoremap <leader>gpl :Dispatch! git pull<CR>
 
-"Syntastic
+" Syntastic
 """"""""""""""""""""
 nnoremap <leader>e :Error<CR>
 
@@ -279,3 +302,5 @@ let g:airline_symbols.branch    = '|/'
 let g:airline_symbols.readonly  = '[READ-ONLY]'
 let g:airline_symbols.linenr    = ':'
 let g:airline_symbols.space     = ' '
+let g:airline_symbols.paste     = 'PASTE'
+
