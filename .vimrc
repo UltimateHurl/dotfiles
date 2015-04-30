@@ -41,64 +41,50 @@ call vundle#begin(path)
 " required!
 Bundle 'gmarik/vundle'
 
-" My Bundles
+" Theme
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'tpope/vim-fugitive'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'elzr/vim-json'
-" Unite 
-Plugin 'Shougo/unite.vim'
-"Buffer Explorer
-"Plugin 'jlanzarotta/bufexplorer'
-" ctrlp is file fuzzy search
-"Plugin 'kien/ctrlp.vim'
-" Ack.vim uses ack to search within files
-"Plugin 'mileszs/ack.vim'
-"Airline provides a stylish appearance for the styleline
-Plugin 'bling/vim-airline'
-" Syntastic provides syntax info
-Plugin 'scrooloose/syntastic'
-"Show git info in the gutter, sad that it and syntastic fight for space though
-Plugin 'airblade/vim-gitgutter'
-"Integrate with tmux
-Plugin 'christoomey/vim-tmux-navigator'
-" Make tmux look like vim-airline (read README for extra instructions)
-Plugin 'edkolev/tmuxline.vim'
-"Provides Sublime-Text like smart completion of braces, parens and such
-Plugin 'Raimondi/delimitMate'
-" Surround is useful for adding surrounding tags to elements (especially html)
-Plugin 'tpope/vim-surround'
-" Allows vim-surround to be used with . command
-Plugin 'tpope/vim-repeat'
-" Provides easy shortcuts for commenting out lines
-Plugin 'scrooloose/nerdcommenter'
-"Adds convenience stuff for writers
-Plugin 'reedes/vim-pencil'
-" Clojure
-Plugin 'tpope/vim-classpath'
-Plugin 'guns/vim-clojure-static'
-Plugin 'tpope/vim-fireplace'
-"Org mode
-Plugin 'jceb/vim-orgmode'
-"Date incrementing
-Plugin 'tpope/vim-speeddating'
-" Snippets engine
-Plugin 'SirVer/ultisnips'
-" Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
-" Autocomplete
-Plugin 'Valloric/YouCompleteMe'
-" Multiple cursors
-Plugin 'terryma/vim-multiple-cursors'
-"Paredit
-Plugin 'vim-scripts/paredit.vim'
-Plugin 'ntpeters/vim-better-whitespace'
-" Align CSV files at commas, align Markdown tables, and more
-Plugin 'godlygeek/tabular'
-Plugin 'Shougo/vimproc.vim'
+
+Plugin 'scrooloose/nerdtree'         " File tree
+Plugin 'Xuyuanp/nerdtree-git-plugin' " Show git statuses beside files in above
+Plugin 'sjl/gundo.vim'               " View undo history as tree
+
+" Integrations
 Plugin 'rizzatti/dash.vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'edkolev/tmuxline.vim'           " Make tmux look like vim-airline
+Plugin 'christoomey/vim-tmux-navigator' "Integrate with tmux
+Plugin 'tpope/vim-fugitive'             " Git
+Plugin 'airblade/vim-gitgutter'
+Plugin 'Shougo/unite.vim'
+Plugin 'bling/vim-airline'              " Airline status line
+Plugin 'tpope/vim-fireplace'            " Clojure REPL
+Plugin 'Valloric/YouCompleteMe'         " Autocomplete
 Plugin 'ervandew/supertab'
-Plugin 'lervag/vimtex'
+Plugin 'scrooloose/syntastic'           " Syntastic provides syntax info
+Plugin 'SirVer/ultisnips'               " Snippets engine
+Plugin 'honza/vim-snippets'             " Snippet collection
+
+" Text manipulation
+Plugin 'jiangmiao/auto-pairs'   " Automatically pair quotes, braces etc.
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'        
+Plugin 'Lokaltog/vim-easymotion' " Awesome motion movement without numbers
+Plugin 'tpope/vim-commentary'    " Comment/uncomment textobjs
+Plugin 'tpope/vim-unimpaired'    " Collection of paired commands
+Plugin 'tpope/vim-speeddating'   " Date incrementing
+Plugin 'terryma/vim-multiple-cursors'     " Multiple cursors
+Plugin 'vim-scripts/paredit.vim'          " Paredit
+Plugin 'ntpeters/vim-better-whitespace'   " Strip whitespace etc
+Plugin 'godlygeek/tabular'                " Align CSV files at commas etc
+
+" Filetypes
+Plugin 'tpope/vim-classpath'     " Clojure
+Plugin 'guns/vim-clojure-static' " Clojure
+Plugin 'lervag/vimtex'           " LaTeX
+Plugin 'jceb/vim-orgmode'        " Org mode
+Plugin 'elzr/vim-json'           " JSON
+Plugin 'plasticboy/vim-markdown' " Markdown
+
 call vundle#end() " required
 
 filetype plugin indent on
@@ -132,14 +118,27 @@ set hidden                                      " Leave hidden buffers open
 set history=1000                                " by default Vim saves your last 8 commands. We can handle more
 set shiftround                                  " use multiple of shiftwidth when indenting with '<' and '>'
 set noerrorbells                                " Disable error bells
-nnoremap <up> <nop>                             " turn off arrow keys
+" turn off arrow keys
+nnoremap <up> <nop>
 nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-nnoremap <c-j> <c-w>j                           "Split navigation
+nnoremap <left> :bp<CR>
+nnoremap <right> :bn<CR>
+"Split navigation
+nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
+nnoremap <Leader>u :GundoToggle<CR>
+" easily get rid of search highlights
+noremap <esc> :noh<return><esc>
+" quick taps for opening extra menus
+map <F4> :NERDTreeToggle<CR>
+imap <F4> <ESC>:NERDTreeToggle<CR>
+
+command Wq wq
+command WQ wq
+command W w
+command Q q
 
 set autochdir
 nnoremap ; :
@@ -175,9 +174,13 @@ set scrolloff=10                               " Start scrolling when we're gett
 set sidescrolloff=15
 set sidescroll=1
 
+" Highlight > 80 chars
+highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
+
 "Mouse
 "========
-set ttyfast                                    " Send more characters for redraws
+set ttyfast                                    " Send more characters for redraw
 set lazyredraw
 set mouse=a                                    " Enable mouse use in all modes
 set ttymouse=xterm2
