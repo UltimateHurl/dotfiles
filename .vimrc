@@ -67,7 +67,7 @@ Plugin 'honza/vim-snippets'             " Snippet collection
 " Text manipulation
 Plugin 'jiangmiao/auto-pairs'   " Automatically pair quotes, braces etc.
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'        
+Plugin 'tpope/vim-repeat'
 Plugin 'Lokaltog/vim-easymotion' " Awesome motion movement without numbers
 Plugin 'tpope/vim-commentary'    " Comment/uncomment textobjs
 Plugin 'tpope/vim-unimpaired'    " Collection of paired commands
@@ -132,13 +132,12 @@ nnoremap <Leader>u :GundoToggle<CR>
 " easily get rid of search highlights
 noremap <esc> :noh<return><esc>
 " quick taps for opening extra menus
-map <F4> :NERDTreeToggle<CR>
-imap <F4> <ESC>:NERDTreeToggle<CR>
+map <Tab> :NERDTreeToggle<CR>
 
-command Wq wq
-command WQ wq
-command W w
-command Q q
+" command Wq wq
+" command WQ wq
+" command W w
+" command Q q
 
 set autochdir
 nnoremap ; :
