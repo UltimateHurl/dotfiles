@@ -133,6 +133,7 @@ nnoremap <Leader>u :GundoToggle<CR>
 noremap <esc> :noh<return><esc>
 " quick taps for opening extra menus
 map <Tab> :NERDTreeToggle<CR>
+let g:NERDTreeShowHidden=1
 
 " command Wq wq
 " command WQ wq
