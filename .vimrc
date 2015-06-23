@@ -2,7 +2,8 @@ set nocompatible
 set t_Co=256
 if has('win32')
 else
-  set term=xterm-256color
+  " set term=linux
+  " " xterm-256color
 endif
 filetype off                   " required!
 
@@ -119,6 +120,11 @@ set history=1000                                " by default Vim saves your last
 set shiftround                                  " use multiple of shiftwidth when indenting with '<' and '>'
 set noerrorbells                                " Disable error bells
 " turn off arrow keys
+" specific to OSX, remap codes arrows send
+map [A] <up>
+map [B] <down>
+map [C] <right>
+map [D] <left>
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> :bp<CR>
