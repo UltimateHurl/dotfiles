@@ -1,10 +1,4 @@
 set nocompatible
-set t_Co=256
-if has('win32')
-else
-  " set term=linux
-  " " xterm-256color
-endif
 filetype off                   " required!
 
 " Setting up Vundle - the vim plugin bundler
@@ -44,6 +38,7 @@ Bundle 'gmarik/vundle'
 
 " Theme
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
 
 Plugin 'scrooloose/nerdtree'         " File tree
 Plugin 'Xuyuanp/nerdtree-git-plugin' " Show git statuses beside files in above
@@ -66,25 +61,25 @@ Plugin 'SirVer/ultisnips'               " Snippets engine
 Plugin 'honza/vim-snippets'             " Snippet collection
 
 " Text manipulation
-Plugin 'jiangmiao/auto-pairs'   " Automatically pair quotes, braces etc.
+Plugin 'jiangmiao/auto-pairs'                   " Automatically pair quotes, braces etc.
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin 'Lokaltog/vim-easymotion' " Awesome motion movement without numbers
-Plugin 'tpope/vim-commentary'    " Comment/uncomment textobjs
-Plugin 'tpope/vim-unimpaired'    " Collection of paired commands
-Plugin 'tpope/vim-speeddating'   " Date incrementing
-Plugin 'terryma/vim-multiple-cursors'     " Multiple cursors
-Plugin 'vim-scripts/paredit.vim'          " Paredit
-Plugin 'ntpeters/vim-better-whitespace'   " Strip whitespace etc
-Plugin 'godlygeek/tabular'                " Align CSV files at commas etc
+Plugin 'Lokaltog/vim-easymotion'                " Awesome motion movement without numbers
+Plugin 'tpope/vim-commentary'                   " Comment/uncomment textobjs
+Plugin 'tpope/vim-unimpaired'                   " Collection of paired commands
+Plugin 'tpope/vim-speeddating'                  " Date incrementing
+Plugin 'terryma/vim-multiple-cursors'           " Multiple cursors
+Plugin 'vim-scripts/paredit.vim'                " Paredit
+Plugin 'ntpeters/vim-better-whitespace'         " Strip whitespace etc
+Plugin 'godlygeek/tabular'                      " Align CSV files at commas etc
 
 " Filetypes
-Plugin 'tpope/vim-classpath'     " Clojure
-Plugin 'guns/vim-clojure-static' " Clojure
-Plugin 'lervag/vimtex'           " LaTeX
-Plugin 'jceb/vim-orgmode'        " Org mode
-Plugin 'elzr/vim-json'           " JSON
-Plugin 'plasticboy/vim-markdown' " Markdown
+Plugin 'tpope/vim-classpath'                    " Clojure
+Plugin 'guns/vim-clojure-static'                " Clojure
+Plugin 'lervag/vimtex'                          " LaTeX
+Plugin 'jceb/vim-orgmode'                       " Org mode
+Plugin 'elzr/vim-json'                          " JSON
+Plugin 'plasticboy/vim-markdown'                " Markdown
 
 call vundle#end() " required
 
@@ -95,7 +90,8 @@ filetype plugin indent on
 syntax enable                                   " Turn on syntax highlighting
 set background=dark
 set t_Co=256
-colorscheme solarized
+let base16colorspace=256
+colorscheme base16-default
 highlight clear SignColumn
 set ruler                                       " Show the cursor position
 set shortmess=atI                               " Don’t show the intro message when starting Vim
@@ -108,7 +104,6 @@ if has('gui_macvim')
 elseif has("gui_win32")
   set guifont=Inconsolata:h12:cANSI
 endif
-
 
 "Misc
 "======
@@ -123,8 +118,8 @@ set noerrorbells                                " Disable error bells
 " specific to OSX, remap codes arrows send
 map [A] <up>
 map [B] <down>
-map [C] <right>
-map [D] <left>
+" map [C] <right>
+" map [D] <left>
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> :bp<CR>
