@@ -133,7 +133,7 @@ nnoremap <Leader>u :GundoToggle<CR>
 " easily get rid of search highlights
 noremap <esc> :noh<return><esc>
 " quick taps for opening extra menus
-map <Tab> :NERDTreeToggle<CR>
+nnoremap <Leader>t :NERDTreeToggle<CR>
 let g:NERDTreeShowHidden=1
 
 " command Wq wq
@@ -174,10 +174,13 @@ set splitbelow                                 " Opens horizontal split below cu
 set scrolloff=10                               " Start scrolling when we're getting close to margins
 set sidescrolloff=15
 set sidescroll=1
+set wildmenu
+set wildmode=longest:full,full
 
 " Highlight > 80 chars
-highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
+highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
+
 
 "Mouse
 "========
