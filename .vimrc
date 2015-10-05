@@ -2,9 +2,9 @@ set nocompatible
 filetype off                   " required!
 
 " Setting up Vundle - the vim plugin bundler
-let iCanHazVundle=1
+let vundle_check=1
 if has('win32')
-  let vundle_readme=expand('H:/vimfiles/bundle/vundle/README.md')
+  let vundle_readme=expand('C:/Users/ehurrell/vimfiles/bundle/vundle/README.md')
 else
   let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
 endif
@@ -12,18 +12,18 @@ if !filereadable(vundle_readme)
     echo "Installing Vundle..."
     echo ""
     if has('win32')
-        silent !mkdir -p H:/vimfiles/bundle
-        silent !git clone https://github.com/gmarik/vundle H:/vimfiles/bundle/vundle
+        silent !mkdir -p C:/Users/ehurrell/vimfiles/bundle
+        silent !git clone https://github.com/gmarik/vundle C:/Users/ehurrell/vimfiles/bundle/vundle
     else
         silent !mkdir -p ~/.vim/bundle
         silent !git clone http://github.com/gmarik/vundle ~/.vim/bundle/vundle
     endif
-    let iCanHazVundle=0
+    let vundle_check=0
 endif
 
 if has('win32')
-  set rtp+=H:/vimfiles/bundle/vundle/
-  let path='H:/vimfiles/bundle'
+  set rtp+=C:/Users/ehurrell/vimfiles/bundle/vundle/
+  let path='C:/Users/ehurrell/vimfiles/bundle'
 else
   set rtp+=~/.vim/bundle/vundle/
   let path='~/.vim/bundle'
@@ -46,12 +46,20 @@ Plugin 'sjl/gundo.vim'               " View undo history as tree
 
 " Integrations
 Plugin 'rizzatti/dash.vim'
-Plugin 'Shougo/vimproc.vim'
+Plugin 'tmux-plugins/vim-tmux'
 Plugin 'edkolev/tmuxline.vim'           " Make tmux look like vim-airline
-Plugin 'christoomey/vim-tmux-navigator' "Integrate with tmux
+Plugin 'christoomey/vim-tmux-navigator' " Integrate with tmux
 Plugin 'tpope/vim-fugitive'             " Git
+Plugin 'tpope/vim-git'
+Plugin 'gregsexton/gitv'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/unite.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'goldfeld/ctrlr.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'majutsushi/tagbar'
 Plugin 'bling/vim-airline'              " Airline status line
 Plugin 'tpope/vim-fireplace'            " Clojure REPL
 Plugin 'Valloric/YouCompleteMe'         " Autocomplete
@@ -61,6 +69,7 @@ Plugin 'SirVer/ultisnips'               " Snippets engine
 Plugin 'honza/vim-snippets'             " Snippet collection
 
 " Text manipulation
+Plugin 'skwp/YankRing.vim'
 Plugin 'jiangmiao/auto-pairs'                   " Automatically pair quotes, braces etc.
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
@@ -72,6 +81,18 @@ Plugin 'terryma/vim-multiple-cursors'           " Multiple cursors
 Plugin 'vim-scripts/paredit.vim'                " Paredit
 Plugin 'ntpeters/vim-better-whitespace'         " Strip whitespace etc
 Plugin 'godlygeek/tabular'                      " Align CSV files at commas etc
+Plugin 'mattn/emmet-vim'
+" Text objects
+Plugin 'austintaylor/vim-indentobject'
+Plugin 'coderifous/textobj-word-column.vim'
+Plugin 'kana/vim-textobj-datetime'
+Plugin 'kana/vim-textobj-entire'
+Plugin 'kana/vim-textobj-function'
+Plugin 'kana/vim-textobj-user'
+Plugin 'lucapette/vim-textobj-underscore'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'thinca/vim-textobj-function-javascript'
+Plugin 'vim-scripts/argtextobj.vim'
 
 " Filetypes
 Plugin 'tpope/vim-classpath'                    " Clojure
@@ -85,19 +106,45 @@ call vundle#end() " required
 
 filetype plugin indent on
 
+augroup vimrcEx
+  autocmd!
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it for commit messages, when the position is invalid, or when
+  " inside an event handler (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  " Automatically wrap at 80 characters for Markdown
+  autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+
+  " Automatically wrap at 72 characters and spell check git commit messages
+  autocmd FileType gitcommit setlocal textwidth=72
+  autocmd FileType gitcommit setlocal spell
+
+  " Allow stylesheets to autocomplete hyphenated words
+  autocmd FileType css,scss,sass setlocal iskeyword+=-
+augroup END
+
 "Appearance
 "======
 syntax enable                                   " Turn on syntax highlighting
 set background=dark
 set t_Co=256
 let base16colorspace=256
-colorscheme base16-default
+colorscheme solarized
 highlight clear SignColumn
 set ruler                                       " Show the cursor position
 set shortmess=atI                               " Don’t show the intro message when starting Vim
 set title                                       " Show the filename in the window titlebar
 set cursorline                                  " Highlight current line
 set number                                      " always show line numbers
+set numberwidth=5
+" Make it obvious where 80 characters is
+set textwidth=80
+set colorcolumn=+1
 set noshowmode                                  " Let airline handle the mode display
 if has('gui_macvim')
   set guifont=Inconsolata:h12
@@ -114,32 +161,30 @@ set hidden                                      " Leave hidden buffers open
 set history=1000                                " by default Vim saves your last 8 commands. We can handle more
 set shiftround                                  " use multiple of shiftwidth when indenting with '<' and '>'
 set noerrorbells                                " Disable error bells
-" turn off arrow keys
-" specific to OSX, remap codes arrows send
-map [A] <up>
-map [B] <down>
-" map [C] <right>
-" map [D] <left>
+" Disable arrows
 nnoremap <up> <nop>
 nnoremap <down> <nop>
-nnoremap <left> :bp<CR>
-nnoremap <right> :bn<CR>
-"Split navigation
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+" Buffer navigation
+nnoremap <leader>z :bp<CR>
+nnoremap <leader>x :bn<CR>
+" Split navigation
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
-nnoremap <Leader>u :GundoToggle<CR>
+" Switch between the last two files
+nnoremap <leader><leader> <c-^>
+nnoremap <leader>u :GundoToggle<CR>
 " easily get rid of search highlights
 noremap <esc> :noh<return><esc>
 " quick taps for opening extra menus
-nnoremap <Leader>t :NERDTreeToggle<CR>
+nnoremap <leader>t :NERDTreeToggle<CR>
 let g:NERDTreeShowHidden=1
 
-" command Wq wq
-" command WQ wq
-" command W w
-" command Q q
+" Always use vertical diffs
+set diffopt+=vertical
 
 set autochdir
 nnoremap ; :
@@ -147,6 +192,17 @@ let mapleader=","                              " change the mapleader from \ to 
 
 nmap <silent> <leader>ev :e $MYVIMRC<CR>" Quickly edit/reload the vimrc file
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
+" Remap VIM 0 to first non-blank character
+map 0 ^
+" Treat long lines as break lines (useful when moving around in them)
+map j gj
+map k gk
+" Close the current buffer
+map <leader>bd :bd<cr>
+" Fast saving
+nmap <leader>w :w!<cr>
 
 
 "Indentation and display
@@ -176,11 +232,12 @@ set sidescrolloff=15
 set sidescroll=1
 set wildmenu
 set wildmode=longest:full,full
-
-" Highlight > 80 chars
-match OverLength /\%81v.\+/
-highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
-
+set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore+=*vim/backups*
+set wildignore+=*DS_Store*
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
 
 "Mouse
 "========
@@ -206,12 +263,17 @@ set nowritebackup
 " Only works in MacVim (gui) mode
 if exists("&undodir")
   if has('win32')
-    set undodir=H:/vimfiles/backups
+    set undodir=C:/Users/ehurrell/vimfiles/backups
   else
     set undodir=~/.vim/backups
   endif
   set undofile
 endif
+
+" Yank Ring
+"==========
+let g:yankring_history_file = '.yankring-history'
+nnoremap <leader>yr :YRShow<CR>
 
 " Folds
 "=====
@@ -225,28 +287,31 @@ set nofoldenable                               " Don't fold by default
 
 " Unite options
 """"""""""""""""""""
-let g:unite_source_history_yank_enable = 1
-let g:unite_split_rule = "botright"
-let g:unite_winheight = 10
+" let g:unite_source_history_yank_enable = 1
+" let g:unite_split_rule = "botright"
+" let g:unite_winheight = 10
 
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-nnoremap <leader>y :Unite history/yank<cr>
-nnoremap <C-p> :Unite file_rec<cr>
-nnoremap <space> :Unite -quick-match buffer<cr>
-nnoremap <leader>/ :Unite grep:.<cr>
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" call unite#filters#sorter_default#use(['sorter_rank'])
+" nnoremap <leader>y :Unite history/yank<cr>
+" nnoremap <C-p> :Unite file_rec<cr>
+" nnoremap <space> :Unite -quick-match buffer<cr>
+" nnoremap <leader>/ :Unite grep:.<cr>
 
 
 " CTRL+P options
 """"""""""""""""""""
-" let g:ctrlp_custom_ignore = {
-    " \ 'file': '\.swp$|\.tmp$|\.pdf$|\.zip$|\.exe$|\.pyc$',
-    " \ 'dir': '\.DS_Store$\|\.git$'
-    " \ }
+let g:ctrlp_custom_ignore = {
+    \ 'file': '\.swp$|\.tmp$|\.pdf$|\.zip$|\.exe$|\.pyc$',
+    \ 'dir': '\.DS_Store$\|\.git$'
+    \ }
 
-" BufExplorer options
-""""""""""""""""""""
-" nnoremap <space> :BufExplorerHorizontalSplit<CR>
+nnoremap <space> :CtrlPBuffer<CR>
+nnoremap <leader>. :CtrlPTag<CR>
+
+" Tagbar options
+"""""""""""""""""
+" nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 "Markdown options
 """"""""""""""""""""
@@ -275,6 +340,7 @@ nnoremap <leader>ge :Gedit<CR>
 nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gw :Gwrite<CR><CR>
 nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <leader>gv :Gitv<CR>
 nnoremap <leader>gp :Ggrep<Space>
 nnoremap <leader>gm :Gmove<Space>
 nnoremap <leader>gb :Git branch<Space>
