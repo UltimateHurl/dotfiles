@@ -128,6 +128,18 @@ augroup vimrcEx
   autocmd FileType css,scss,sass setlocal iskeyword+=-
 augroup END
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
 "Appearance
 "======
 syntax enable                                   " Turn on syntax highlighting
@@ -311,7 +323,7 @@ nnoremap <leader>. :CtrlPTag<CR>
 
 " Tagbar options
 """""""""""""""""
-" nnoremap <silent> <Leader>b :TagbarToggle<CR>
+nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 "Markdown options
 """"""""""""""""""""
