@@ -1,109 +1,92 @@
 set nocompatible
 filetype off                   " required!
 
-" Setting up Vundle - the vim plugin bundler
-let vundle_check=1
+" Setting up vim-plug
 if has('win32')
-  let vundle_readme=expand('C:/Users/ehurrell/vimfiles/bundle/vundle/README.md')
+  let plug_file=expand('~/vimfiles/autoload/plug.vim')
 else
-  let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
+  let plug_file=expand('~/.vim/autoload/plug.vim')
 endif
-if !filereadable(vundle_readme)
-    echo "Installing Vundle..."
+if !filereadable(plug_file)
+    echo "Installing vim-plug..."
     echo ""
     if has('win32')
-        silent !mkdir -p C:/Users/ehurrell/vimfiles/bundle
-        silent !git clone https://github.com/gmarik/vundle C:/Users/ehurrell/vimfiles/bundle/vundle
+        silent !mkdir -p C:/Users/ehurrell/vimfiles/autoload/
+        silent !curl -fLo C:/Users/ehurrell/vimfiles/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     else
-        silent !mkdir -p ~/.vim/bundle
-        silent !git clone http://github.com/gmarik/vundle ~/.vim/bundle/vundle
+        silent !mkdir -p ~/.vim/autoload/
+        silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     endif
-    let vundle_check=0
 endif
 
 if has('win32')
-  set rtp+=C:/Users/ehurrell/vimfiles/bundle/vundle/
-  let path='C:/Users/ehurrell/vimfiles/bundle'
+  let path='~/vimfiles/plugged'
 else
-  set rtp+=~/.vim/bundle/vundle/
-  let path='~/.vim/bundle'
+  let path='~/.vim/plugged'
 endif
 
-call vundle#begin(path)
-" call vundle#rc()
-
-" let Vundle manage Vundle
-" required!
-Bundle 'gmarik/vundle'
-
+call plug#begin(path)
 " Theme
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'chriskempson/base16-vim'
+Plug 'altercation/vim-colors-solarized'
 
-Plugin 'scrooloose/nerdtree'         " File tree
-Plugin 'Xuyuanp/nerdtree-git-plugin' " Show git statuses beside files in above
-Plugin 'sjl/gundo.vim'               " View undo history as tree
 
 " Integrations
-Plugin 'rizzatti/dash.vim'
-Plugin 'tmux-plugins/vim-tmux'
-Plugin 'edkolev/tmuxline.vim'           " Make tmux look like vim-airline
-Plugin 'christoomey/vim-tmux-navigator' " Integrate with tmux
-Plugin 'tpope/vim-fugitive'             " Git
-Plugin 'tpope/vim-git'
-Plugin 'gregsexton/gitv'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'Shougo/unite.vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'goldfeld/ctrlr.vim'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-easytags'
-Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'              " Airline status line
-Plugin 'tpope/vim-fireplace'            " Clojure REPL
-Plugin 'Valloric/YouCompleteMe'         " Autocomplete
-Plugin 'ervandew/supertab'
-Plugin 'scrooloose/syntastic'           " Syntastic provides syntax info
-Plugin 'SirVer/ultisnips'               " Snippets engine
-Plugin 'honza/vim-snippets'             " Snippet collection
+Plug 'jpalardy/vim-slime'
+Plug 'rizzatti/dash.vim'
+Plug 'tmux-plugins/vim-tmux' | Plug 'edkolev/tmuxline.vim' | Plug 'christoomey/vim-tmux-navigator'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'airblade/vim-gitgutter'
+Plug 'scrooloose/nerdtree' | Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'sjl/gundo.vim'
+Plug 'gregsexton/gitv'
+Plug 'Shougo/vimproc.vim'
+Plug 'kien/ctrlp.vim'
+Plug 'goldfeld/ctrlr.vim'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-easytags' | Plug 'majutsushi/tagbar'
+Plug 'bling/vim-airline'              " Airline status line
+Plug 'tpope/vim-fireplace'            " Clojure REPL
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'ervandew/supertab'
+Plug 'scrooloose/syntastic'           " Syntastic provides syntax info
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " Text manipulation
-Plugin 'skwp/YankRing.vim'
-Plugin 'jiangmiao/auto-pairs'                   " Automatically pair quotes, braces etc.
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'Lokaltog/vim-easymotion'                " Awesome motion movement without numbers
-Plugin 'tpope/vim-commentary'                   " Comment/uncomment textobjs
-Plugin 'tpope/vim-unimpaired'                   " Collection of paired commands
-Plugin 'tpope/vim-speeddating'                  " Date incrementing
-Plugin 'terryma/vim-multiple-cursors'           " Multiple cursors
-Plugin 'vim-scripts/paredit.vim'                " Paredit
-Plugin 'ntpeters/vim-better-whitespace'         " Strip whitespace etc
-Plugin 'godlygeek/tabular'                      " Align CSV files at commas etc
-Plugin 'mattn/emmet-vim'
+Plug 'skwp/YankRing.vim'
+Plug 'jiangmiao/auto-pairs'           " Automatically pair quotes, braces etc.
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'Lokaltog/vim-easymotion'        " Awesome motion movement without numbers
+Plug 'tpope/vim-commentary'           " Comment/uncomment textobjs
+Plug 'tpope/vim-unimpaired'           " Collection of paired commands
+Plug 'tpope/vim-speeddating'          " Date incrementing
+Plug 'terryma/vim-multiple-cursors'   " Multiple cursors
+Plug 'vim-scripts/paredit.vim'        " Paredit
+Plug 'ntpeters/vim-better-whitespace' " Strip whitespace etc
+Plug 'godlygeek/tabular'              " Align CSV files at commas etc
+Plug 'mattn/emmet-vim'
+
 " Text objects
-Plugin 'austintaylor/vim-indentobject'
-Plugin 'coderifous/textobj-word-column.vim'
-Plugin 'kana/vim-textobj-datetime'
-Plugin 'kana/vim-textobj-entire'
-Plugin 'kana/vim-textobj-function'
-Plugin 'kana/vim-textobj-user'
-Plugin 'lucapette/vim-textobj-underscore'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'thinca/vim-textobj-function-javascript'
-Plugin 'vim-scripts/argtextobj.vim'
+Plug 'austintaylor/vim-indentobject'
+Plug 'coderifous/textobj-word-column.vim'
+Plug 'kana/vim-textobj-datetime'
+Plug 'kana/vim-textobj-entire'
+Plug 'kana/vim-textobj-function'
+Plug 'kana/vim-textobj-user'
+Plug 'lucapette/vim-textobj-underscore'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'thinca/vim-textobj-function-javascript'
+Plug 'vim-scripts/argtextobj.vim'
 
 " Filetypes
-Plugin 'tpope/vim-classpath'                    " Clojure
-Plugin 'guns/vim-clojure-static'                " Clojure
-Plugin 'lervag/vimtex'                          " LaTeX
-Plugin 'jceb/vim-orgmode'                       " Org mode
-Plugin 'elzr/vim-json'                          " JSON
-Plugin 'plasticboy/vim-markdown'                " Markdown
+Plug 'tpope/vim-classpath' | Plug 'guns/vim-clojure-static' " Clojure
+Plug 'lervag/vimtex'                          " LaTeX
+Plug 'jceb/vim-orgmode'                       " Org mode
+Plug 'elzr/vim-json'                          " JSON
+Plug 'plasticboy/vim-markdown'                " Markdown
 
-call vundle#end() " required
-
+call plug#end()
 filetype plugin indent on
 
 augroup vimrcEx
@@ -134,11 +117,17 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  if has('win32')
+    let g:ctrlp_user_command = 'ag -l --nocolor -g "" %s'
+  else
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  endif
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 "Appearance
 "======
@@ -297,6 +286,11 @@ set nofoldenable                               " Don't fold by default
 " Plugin Options
 " ==============
 
+" Vim-Slime
+"""""""""""
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": "default", "target_pane": "1"}
+
 " Unite options
 """"""""""""""""""""
 " let g:unite_source_history_yank_enable = 1
@@ -313,10 +307,10 @@ set nofoldenable                               " Don't fold by default
 
 " CTRL+P options
 """"""""""""""""""""
-let g:ctrlp_custom_ignore = {
-    \ 'file': '\.swp$|\.tmp$|\.pdf$|\.zip$|\.exe$|\.pyc$',
-    \ 'dir': '\.DS_Store$\|\.git$'
-    \ }
+" let g:ctrlp_custom_ignore = {
+"     \ 'file': '\.swp$|\.tmp$|\.pdf$|\.zip$|\.exe$|\.pyc$',
+"     \ 'dir': '\.DS_Store$\|\.git$'
+"     \ }
 
 nnoremap <space> :CtrlPBuffer<CR>
 nnoremap <leader>. :CtrlPTag<CR>
