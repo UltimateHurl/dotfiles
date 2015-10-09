@@ -356,6 +356,7 @@ nnoremap <leader>gpl :Dispatch! git pull<CR>
 
 " Syntastic
 """"""""""""""""""""
+let g:syntastic_python_checkers = ['flake8', 'pylint']
 nnoremap <leader>e :Error<CR>
 
 " NERDCommenter
