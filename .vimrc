@@ -51,6 +51,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'ervandew/supertab'
 Plug 'scrooloose/syntastic'           " Syntastic provides syntax info
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'junegunn/goyo.vim' | Plug 'amix/vim-zenroom2'
 
 " Text manipulation
 Plug 'skwp/YankRing.vim'
