@@ -62,7 +62,7 @@ Plug 'goldfeld/ctrlr.vim'
 
 " Typing/Autocomplete
 Plug 'scrooloose/syntastic'           " Syntastic provides syntax info
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'jiangmiao/auto-pairs'           " Automatically pair quotes, braces etc.
 Plug 'vim-scripts/paredit.vim'        " Paredit
 Plug 'ajh17/VimCompletesMe'           " Super lightweight smart-tab for ins-completion
@@ -335,9 +335,9 @@ let g:org_todo_keywords = [
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 """"""""""""""""""""
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+" let g:UltiSnipsExpandTrigger="<c-j>"
+" let g:UltiSnipsJumpForwardTrigger="<c-j>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " fugitive git bindings
 """"""""""""""""""""
