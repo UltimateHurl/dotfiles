@@ -28,7 +28,8 @@ endif
 call plug#begin(path)
 " Appearance
 Plug 'altercation/vim-colors-solarized'
-Plug 'bling/vim-airline'              " Airline status line
+Plug 'vim-airline/vim-airline'              " Airline status line
+Plug 'vim-airline/vim-airline-themes'
 
 " Integrations
 Plug 'mhinz/vim-sayonara'          " Sanely quit buffers/windows etc.
@@ -153,6 +154,9 @@ if executable('ag')
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
@@ -276,10 +280,10 @@ map 0 ^
 " Close the current buffer
 nnoremap <Leader>x :Sayonara<CR>y<CR>
 nnoremap <Leader>q :w<CR>:Sayonara<CR>
-nnoremap <Leader>w :w!<CR>
+nnoremap <Leader>s :w!<CR>
 nnoremap <Leader>Q :q!<CR>
 " Switch between the last two files
-nnoremap <leader><leader> <c-^>
+nnoremap <leader>l <c-^>
 nnoremap <leader>u :GundoToggle<CR>
 " easily get rid of search highlights
 noremap <leader>/ :noh<CR>
