@@ -416,7 +416,9 @@ let g:airline_symbols.linenr    = ':'
 let g:airline_symbols.space     = ' '
 let g:airline_symbols.paste     = 'PASTE'
 
-
+" Tmuxline
+""""""""""""""""""""
+let g:tmuxline_preset = 'airline_visual'
 " vimtex
 """"""""""""""""""""
 let g:tex_flavor='xelatex'
