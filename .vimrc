@@ -80,6 +80,7 @@ Plug 'terryma/vim-multiple-cursors'   " Multiple cursors
 Plug 'ntpeters/vim-better-whitespace' " Strip whitespace etc
 Plug 'godlygeek/tabular'              " Align CSV files at commas etc
 Plug 'mattn/emmet-vim'
+Plug 'chriskempson/base16-vim'
 
 " Text objects
 Plug 'austintaylor/vim-indentobject'
@@ -165,7 +166,8 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 syntax enable                                   " Turn on syntax highlighting
 set background=dark
 set t_Co=256
-colorscheme solarized
+" colorscheme solarized
+colorscheme base16-default-dark
 highlight clear SignColumn
 set ruler                                       " Show the cursor position
 set shortmess=atI                               " Don’t show the intro message when starting Vim
@@ -418,7 +420,7 @@ let g:airline_symbols.paste     = 'PASTE'
 
 " Tmuxline
 """"""""""""""""""""
-let g:tmuxline_preset = 'airline_visual'
+" let g:tmuxline_preset = 'airline_visual'
 " vimtex
 """"""""""""""""""""
 let g:tex_flavor='xelatex'
