@@ -323,7 +323,7 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd ";") 'evil-ex)
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/Dropbox/Tasks/todo.org" "Capture")
-           "* TODO %?  %i\n  %t  %a")))
+           "* TODO %?  %i")))
   (setq org-agenda-files (list "~/Dropbox/Tasks/todo.org"
                                "~/Dropbox/Tasks/cohort.org"))
   )
