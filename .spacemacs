@@ -40,6 +40,7 @@ values."
      helm
      ;; auto-completion
      ;; better-defaults
+     ;; ivy
      emacs-lisp
      git
      markdown
@@ -145,7 +146,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata for Powerline"
+   dotspacemacs-default-font '("Source Code Pro"
                                :size 13
                                :weight normal
                                :width normal
@@ -321,11 +322,30 @@ you should place your code here."
   (setq mac-option-modifier 'meta)
   (setq-default evil-escape-key-sequence "jk")
   (define-key evil-normal-state-map (kbd ";") 'evil-ex)
+  (setq org-todo-keywords
+        (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                (sequence "WAITING(w)" "HOLD(h)" "|" "CANCELLED(c)" "PHONE" "MEETING"))))
+  (setq org-agenda-custom-commands
+        '(
+          ("n" todo "NEXT")
+          ("w" todo "WAITING")
+          ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))
+          ))
+  ;; Automatically add tags when state changes occur
+  (setq org-todo-state-tags-triggers
+        (quote (("CANCELLED" ("CANCELLED" . t))
+                ("WAITING" ("WAITING" . t))
+                ("HOLD" ("WAITING") ("HOLD" . t))
+                (done ("WAITING") ("HOLD"))
+                ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/Dropbox/Tasks/todo.org" "Capture")
+        '(("t" "Todo" entry (file+headline "D:/Dropbox/Tasks/todo.org" "Capture")
            "* TODO %?  %i")))
-  (setq org-agenda-files (list "~/Dropbox/Tasks/todo.org"
-                               "~/Dropbox/Tasks/cohort.org"))
+  (setq org-agenda-files (list "D:/Dropbox/Tasks/todo.org"))
+  (with-eval-after-load 'helm
+    (setq helm-display-function 'helm-default-display-buffer))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -374,7 +394,7 @@ you should place your code here."
  '(org-agenda-files (quote ("~/Dropbox/Tasks/todo-today.txt")))
  '(package-selected-packages
    (quote
-    (csv-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl xterm-color shell-pop multi-term helm-dash eshell-z eshell-prompt-extras esh-help dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat dash-at-point yapfify yaml-mode pyvenv pytest pyenv-mode py-isort pip-requirements noflet lua-mode live-py-mode insert-shebang hy-mode helm-pydoc fish-mode ensime sbt-mode scala-mode ein websocket cython-mode clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode auctex anaconda-mode pythonic base16-theme pandoc-mode ox-pandoc ht smeargle orgit org-projectile org-present org org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete zenburn-theme color-theme-solarized-theme solarized-theme color-theme-sanityinc-solarized ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
+    (wgrep smex ivy-hydra counsel-projectile counsel-dash counsel swiper ivy ghub let-alist zeal-at-point org-category-capture dash-functional skewer-mode request-deferred deferred js2-mode simple-httpd csv-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl xterm-color shell-pop multi-term helm-dash eshell-z eshell-prompt-extras esh-help dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat dash-at-point yapfify yaml-mode pyvenv pytest pyenv-mode py-isort pip-requirements noflet lua-mode live-py-mode insert-shebang hy-mode helm-pydoc fish-mode ensime sbt-mode scala-mode ein websocket cython-mode clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode auctex anaconda-mode pythonic base16-theme pandoc-mode ox-pandoc ht smeargle orgit org-projectile org-present org org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete zenburn-theme color-theme-solarized-theme solarized-theme color-theme-sanityinc-solarized ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
