@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     finance
      nginx
      helm
      (auto-completion :variables
@@ -42,10 +43,11 @@ values."
      restclient
      emacs-lisp
      git
+     github
      markdown
      org
      clojure
-     python
+     (python :variables python-test-runner 'pytest)
      ruby
      scala
      latex
@@ -69,6 +71,7 @@ values."
      syntax-checking
      version-control
      spotify
+     emoji
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -197,7 +200,7 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
@@ -268,7 +271,7 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers t
+   dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -318,7 +321,7 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (require 'yasnippet-snippets)
+  ;; (require 'yasnippet-snippets)
   (require 'org-drill)
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
@@ -328,15 +331,14 @@ you should place your code here."
   (setq python-shell-interpreter "python3")
   (setq-default evil-escape-key-sequence "jk")
   (define-key evil-normal-state-map (kbd ";") 'evil-ex)
+  (setq spaceline-org-clock-p t)
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
                 (sequence "WAITING(w)" "HOLD(h)" "|" "CANCELLED(c)" "PHONE" "MEETING"))))
   (setq org-agenda-custom-commands
-        '(
-          ("n" todo "NEXT")
+        '(("n" todo "NEXT")
           ("w" todo "WAITING")
-          ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))
-          ))
+          ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))))
   ;; Automatically add tags when state changes occur
   (setq org-todo-state-tags-triggers
         (quote (("CANCELLED" ("CANCELLED" . t))
@@ -354,8 +356,19 @@ you should place your code here."
   (set-register ?m (cons 'file "~/Documents/Tasks/meetings.org"))
   (set-register ?w (cons 'file "~/Documents/Tasks/weekly.org"))
   (display-time-mode 1)
+  (setq powerline-default-separator 'chamfer)
   (with-eval-after-load 'helm
     (setq helm-display-function 'helm-default-display-buffer))
+
+  (require 'ob-python)
+  (require 'ob-ledger)
+  (require 'ob-shell)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (ledger . t)
+     (shell . t)
+     ))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -407,7 +420,7 @@ you should place your code here."
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (yasnippet-snippets sesman restclient-helm ob-restclient ob-http company-restclient restclient know-your-http-well nginx-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl md4rd sql-indent helm-gtags ggtags rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby company-quickhelp fuzzy company-web web-completion-data company-shell company-auctex company-anaconda clojure-snippets spotify helm-spotify-plus multi writegood-mode org-mime wgrep smex ivy-hydra counsel-projectile counsel-dash counsel swiper ivy ghub let-alist zeal-at-point org-category-capture dash-functional skewer-mode request-deferred deferred js2-mode simple-httpd csv-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl xterm-color shell-pop multi-term helm-dash eshell-z eshell-prompt-extras esh-help dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat dash-at-point yapfify yaml-mode pyvenv pytest pyenv-mode py-isort pip-requirements noflet lua-mode live-py-mode insert-shebang hy-mode helm-pydoc fish-mode ensime sbt-mode scala-mode ein websocket cython-mode clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode auctex anaconda-mode pythonic base16-theme pandoc-mode ox-pandoc ht smeargle orgit org-projectile org-present org org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete zenburn-theme color-theme-solarized-theme solarized-theme color-theme-sanityinc-solarized ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
+    (magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache emojify emoji-cheat-sheet-plus company-emoji fireplace speed-type flycheck-ledger ledger-mode evil-ledger yasnippet-classic-snippets r-autoyas yasnippet-snippets sesman restclient-helm ob-restclient ob-http company-restclient restclient know-your-http-well nginx-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl md4rd sql-indent helm-gtags ggtags rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby company-quickhelp fuzzy company-web web-completion-data company-shell company-auctex company-anaconda clojure-snippets spotify helm-spotify-plus multi writegood-mode org-mime wgrep smex ivy-hydra counsel-projectile counsel-dash counsel swiper ivy ghub let-alist zeal-at-point org-category-capture dash-functional skewer-mode request-deferred deferred js2-mode simple-httpd csv-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl xterm-color shell-pop multi-term helm-dash eshell-z eshell-prompt-extras esh-help dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat dash-at-point yapfify yaml-mode pyvenv pytest pyenv-mode py-isort pip-requirements noflet lua-mode live-py-mode insert-shebang hy-mode helm-pydoc fish-mode ensime sbt-mode scala-mode ein websocket cython-mode clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider seq queue clojure-mode auctex anaconda-mode pythonic base16-theme pandoc-mode ox-pandoc ht smeargle orgit org-projectile org-present org org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete zenburn-theme color-theme-solarized-theme solarized-theme color-theme-sanityinc-solarized ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#073642")
